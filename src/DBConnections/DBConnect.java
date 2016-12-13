@@ -24,6 +24,14 @@ public class DBConnect {
     
 	private Connection connection = null;
         
+        final private String serverName = "localhost";
+        
+        final private String username = "root";
+	final private String password = "";
+        
+        String dbName;
+        
+        
 	public DBConnect() {
 		 String driverName = "org.gjt.mm.mysql.Driver";
 		 
@@ -37,23 +45,27 @@ public class DBConnect {
 				e.printStackTrace();
 			}
 
-		    String serverName = "localhost";
-		    String mydatabase = "uni";
-		    String url = "jdbc:mysql://" + serverName + "/" + mydatabase; 
+		    
+		    
 
-		    String username = "root";
-		    String password = "";
-		    try {
-		    	connection = DriverManager.getConnection(url, username, password);
-			System.out.println("connection to db established");
-		    } catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
                     
 		    
 	}
         public Connection getConnection(){
 		return connection;
 	}
+        public void setConnection(String dbName){
+            
+            this.dbName = dbName;
+            String url = "jdbc:mysql://" + serverName + "/" + dbName; 
+
+
+            try {
+		connection = DriverManager.getConnection(url, username, password);
+		System.out.println("connection to db "+dbName+" established");
+            } catch (SQLException e) {
+				
+		e.printStackTrace();
+            }            
+        }
 }
