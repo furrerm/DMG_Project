@@ -59,11 +59,19 @@ public class StoreDB {
                     Statement st = (Statement) connection.createStatement(); 
                     resultSet = st.executeQuery("SELECT * FROM "+tableName);
                    
-                    boolean inColoumNr = true;
+                     ResultSetMetaData rsmd = resultSet.getMetaData();
                     
-                    ResultSetMetaData rsmd = resultSet.getMetaData();
                     
-                    meta = new ArrayList <Object>();
+                    
+                    
+                    
+                    
+                                 
+                    while(resultSet.next()){
+                        boolean inColoumNr = true;
+                    
+                   
+                        meta = new ArrayList <Object>();
                     types = new ArrayList <Object>();
                     meta.add(rsmd.getCatalogName(1));
                     meta.add(rsmd.getTableName(1));
@@ -75,20 +83,15 @@ public class StoreDB {
                         try{
                             meta.add(rsmd.getColumnName(i));
                             types.add(rsmd.getColumnType(i));
+                             System.out.println("true"+meta.get(i));
                         }
                         catch (Exception e){
+                            System.out.println("false");
                             inColoumNr = false;
                         }
                                 
                         ++i;
                     }
-                    
-                    
-                    
-                    
-                                 
-                    while(resultSet.next()){
-                        
 
                         i = 1;
                         inColoumNr = true;
@@ -96,19 +99,30 @@ public class StoreDB {
                         row = new ArrayList <Object>();
                         
                         row.add(new Metadata(meta,types));
-                        
+                        for (int i6 =0; i6 < ((Metadata)row.get(0)).metaSize();++i6){
+                        System.out.println("ffffffffffffffffff = "+((Metadata)row.get(0)).getValue(i6));
+                                }
                         
                         
                         while(inColoumNr){
                            
 
                             try{
+                                System.out.println("************************************************************"+((Metadata)row.get(0)).metaSize());
                                // System.out.println(value = resultSet.getObject(i));
                                value = resultSet.getObject(i);
                                 row.add(value);
+                                for (int i5 =0; i5 < ((Metadata)row.get(0)).metaSize();++i5){
+                                   // System.out.println("************************************************************");
+                                    System.out.println(((Metadata)row.get(0)).getValue(i5));
+                                     //System.out.println("************************************************************");
+                                    
+                                }
+                                
                                 
                             }
                             catch (Exception e){
+                                System.out.println(e.getMessage());
                                 
                                 inColoumNr = false;
                                 

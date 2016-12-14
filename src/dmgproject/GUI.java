@@ -164,6 +164,7 @@ public class GUI extends JFrame implements MouseListener{
             
             buttonPanel1.setBackground(Color.BLACK);
             buttonPanel2.setBackground(Color.GREEN);
+             showDb();
             
             
           }
@@ -231,8 +232,8 @@ public class GUI extends JFrame implements MouseListener{
             textContainer.setText(new Integer(t).toString());
             factory.refactoring(t);
             
-            textContainer.setText(embDocComboBox.getSelectedItem()+" is now in "+docComboBox.getSelectedItem()+" embedded");
-            
+            //textContainer.setText(embDocComboBox.getSelectedItem()+" is now in "+docComboBox.getSelectedItem()+" embedded");
+            showDb();
           }
         });
         buttonPanel2.add(embeddButton);
@@ -249,6 +250,7 @@ public class GUI extends JFrame implements MouseListener{
             
             mongo = new Mongo();
             mongo.createMongo(store.getDataBase());
+            
             
             buttonPanel2.setBackground(Color.BLACK);
             buttonPanel3.setBackground(Color.GREEN);
@@ -305,6 +307,41 @@ public class GUI extends JFrame implements MouseListener{
     public void mousePressed(MouseEvent me){
            
       
+    }
+    public void showDb(){
+        
+        System.out.println(store.getDataBase().get(2));
+        ArrayList <ArrayList> l1 = store.getDataBase();
+        ArrayList <Object> l2 = l1.get(6);
+        Row r = (Row)l2.get(3);
+        Metadata m = (Metadata)r.getMetadata();
+       
+        System.out.println("pvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvp");
+        for(int i = 2; i < m.metaSize();++i){
+            System.out.println("*******************"+m.getValue(i));
+        }
+        for(int i = 1; i < r.size();++i){
+            System.out.println("+++++++++++++++++++++++"+r.getValue(i));
+        }
+        for(int i = 0; i < m.typesSize();++i){
+            System.out.println("-------------------------"+m.getType(i));
+        }
+        
+        l2 = l1.get(2);
+        r = (Row)l2.get(3);
+        m = (Metadata)r.getMetadata();
+       System.out.println("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
+        
+        for(int i = 2; i < m.metaSize();++i){
+            System.out.println("*******************"+m.getValue(i));
+        }
+        for(int i = 1; i < r.size();++i){
+            System.out.println("+++++++++++++++++++++++"+r.getValue(i));
+        }
+        for(int i = 0; i < m.typesSize();++i){
+            System.out.println("-------------------------"+m.getType(i));
+        }
+
     }
     
 }

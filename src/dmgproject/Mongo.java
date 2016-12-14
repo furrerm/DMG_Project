@@ -75,7 +75,7 @@ public class Mongo {
                 }               
                 //DB einträge ende
                 System.out.println(query);
-                System.out.println(queryWithType);
+                //System.out.println(queryWithType);
                 
             }
            
@@ -101,38 +101,39 @@ public class Mongo {
         
         for(int i3 = 1; i3 < row.size(); i3++){
                       
-        meta = (Metadata)row.getValue(0);
-        //System.out.println(meta);
-        key = meta.getValue(i3+1).toString();
-        type = (int)meta.getType(i3-1);
-        value = row.getValue(i3).toString();
-        
-        if(i3 > 2 && key.equals(meta.getValue(2).toString())){
-            query += "}, {";
-            comma = "";
-        }
-        //System.out.println(meta); 
-        //System.out.println(key); 
-        //System.out.println(type); 
-        //System.out.println(value); 
-        
-        
-        if(type == 12 || type == 1){
-            query += comma+" "+key+" : '"+value+"' ";
-            queryWithType += comma+" "+key+" : '"+value+"' "+type; 
-        }
-        else if(type == -5 || type == 2|| type ==3|| type ==4|| type ==5|| type ==6|| type ==7|| type ==8){
-            query += comma+" "+key+" : "+value+" ";
-            queryWithType += comma+" "+key+" : '"+value+"' "+type; 
-        }
-        else if(type == 99){
-            // System.out.println("************************************************************");
-           
-           query += comma+"  "+key+" : [";
-           setQuery((Row)row.getValue(i3));
-           query += "]";
-        }
-        comma = ",";
+            meta = (Metadata)row.getValue(0);
+            //System.out.println(meta);
+            key = meta.getValue(i3+1).toString();
+            type = (int)meta.getType(i3-1);
+            value = row.getValue(i3).toString();
+            System.out.println(key);
+
+            if(i3 > 2 && key.equals(meta.getValue(2).toString())){
+                query += "}, {";
+                comma = "";
+            }
+            //System.out.println(meta); 
+            //System.out.println(key); 
+            //System.out.println(type); 
+            //System.out.println(value); 
+
+
+            if(type == 12 || type == 1){
+                query += comma+" "+key+" : '"+value+"' ";
+                queryWithType += comma+" "+key+" : '"+value+"' "+type; 
+            }
+            else if(type == -5 || type == 2|| type ==3|| type ==4|| type ==5|| type ==6|| type ==7|| type ==8){
+                query += comma+" "+key+" : "+value+" ";
+                queryWithType += comma+" "+key+" : '"+value+"' "+type; 
+            }
+            else if(type == 99&&((Row)row.getValue(i3)).size()!=0){
+                System.out.println("************************************************************"+value);
+             
+               query += comma+"  "+key+" : [";
+               setQuery((Row)row.getValue(i3));
+               query += "]";
+            }
+            comma = ",";
                                  
                     
                      

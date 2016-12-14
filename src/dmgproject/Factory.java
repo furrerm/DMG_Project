@@ -90,6 +90,8 @@ public class Factory  implements Factorys {
         int tableToJoinNr = tableToJoinNrs.get(chosenItemNr);
         int coloumToJoinNr = coloumToJoinsNrs.get(chosenItemNr);
         
+        System.out.println(chosenItemNr+"   "+tableToJoinNr);
+        
         String valueToCompare1;
         String valueToCompare2;
         
@@ -98,19 +100,31 @@ public class Factory  implements Factorys {
         for(int i1 = 0; i1 < dataBase.get(tableWhichJoinsNr).size(); ++i1){
             
             rowToInsert = new Row();
-           // System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
+            // System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
             valueToCompare1 = (((Row)dataBase.get(tableWhichJoinsNr).get(i1)).getValue(coloumWhichJoinsNr)).toString();
+            boolean conc = false;
             for(int i2 = 0; i2 < dataBase.get(tableToJoinNr).size(); ++i2){
                 valueToCompare2 = (((Row)dataBase.get(tableToJoinNr).get(i2)).getValue(coloumToJoinNr)).toString();
+                //wenn mehrere zeilen von table to join einer Zeile in table which joins angehängt werden.
+                System.out.println(valueToCompare1+"            "+valueToCompare2);
                 if(valueToCompare1.equals(valueToCompare2)){
+                  
+                    rowToInsert.concatenateMeta((Row)dataBase.get(tableToJoinNr).get(i2));
+                   
+                    
                     rowToInsert.concatenateRow((Row)dataBase.get(tableToJoinNr).get(i2));
-                   // System.out.println("*****************************************");
+                    System.out.println("Conatenation ********************ConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenationConatenation");
+                    conc = true;
                 }
             }
             String TableName = ((Row)dataBase.get(tableToJoinNr).get(0)).getMetadata().getValue(1).toString();
+           // System.out.println("2222222222222222222222222222222         "+rowToInsert.getValue(1)+"           555555555555555555555555555555555555");
+            
             ((Row)dataBase.get(tableWhichJoinsNr).get(i1)).addValue(rowToInsert);
+            //if(i1 == 0){
             ((Row)dataBase.get(tableWhichJoinsNr).get(i1)).getMetadata().addMeta(TableName);
             ((Row)dataBase.get(tableWhichJoinsNr).get(i1)).getMetadata().addType(99);
+            
             
         }
        // System.out.println(((Row)dataBase.get(2).get(1)).getValue(5));
