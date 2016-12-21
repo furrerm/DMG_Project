@@ -112,6 +112,8 @@ public class GUI extends JFrame{
         textContainer2.setPreferredSize(new Dimension(650,30));
         textContainer2.setForeground(Color.WHITE);
         
+       
+        
         JPanel buttonPanel0 = new JPanel();
         buttonPanel0.setLayout(new FlowLayout());
         buttonPanel0.setBackground(Color.WHITE);
@@ -238,9 +240,10 @@ public class GUI extends JFrame{
             
           }
         });
+        buttonPanel1.add(comboBox);
         buttonPanel1.add(storeButton);
         
-        buttonPanel1.add(comboBox);
+        
        
        
        
@@ -255,7 +258,7 @@ public class GUI extends JFrame{
           public void actionPerformed(ActionEvent e)
           {
            
-            //textContainer.setText("Soething has switched on gui was pressed");
+          
            
             factory = new Factory(store.getDataBase());
             
@@ -301,7 +304,8 @@ public class GUI extends JFrame{
             
             factory.refactoring(embDocComboBox.getSelectedIndex());
             
-            //textContainer.setText(embDocComboBox.getSelectedItem()+" is now in "+docComboBox.getSelectedItem()+" embedded");
+            textContainer1.setText(embDocComboBox.getSelectedItem()+" is now in "+docComboBox.getSelectedItem()+" embedded");
+            textContainer2.setText("");
            
           }
         });
