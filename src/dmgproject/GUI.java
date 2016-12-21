@@ -24,6 +24,7 @@ import java.util.*;
 import Rows.*;
 import com.mongodb.DB;
 import DBConnections.*;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ import java.sql.ResultSet;
  * @author Markus
  */
 
-public class GUI extends JFrame implements MouseListener{
+public class GUI extends JFrame{
     
     JLayeredPane laypane;
     
@@ -51,9 +52,17 @@ public class GUI extends JFrame implements MouseListener{
     Factory factory;
     Mongo mongo;
     
+    DBConnect dbConnect;
+    
     public GUI(){
         //gradient
-        //
+        
+        String filePath = new File("").getAbsolutePath();
+        
+        filePath = filePath.concat("\\Pictures\\FrameIcon_tree.png");
+       
+        ImageIcon img = new ImageIcon(filePath);
+        this.setIconImage(img.getImage());
         d1 = new Dimension(700,350);
         
         this.getContentPane().setPreferredSize(d1);
@@ -68,12 +77,14 @@ public class GUI extends JFrame implements MouseListener{
         
        // this.addMouseListener(this);
         this.setResizable(false);
+        this.setTitle("MyMongo");
         
         //Text Panel
         JPanel textPanel = new JPanel();
         textPanel.setPreferredSize(new Dimension(500,200));
         textPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
-        textPanel.setBackground(Color.WHITE);
+        Color col = new Color(50,40,130);
+        textPanel.setBackground(col);
         this.add(textPanel,BorderLayout.PAGE_START);
         
         
@@ -82,19 +93,35 @@ public class GUI extends JFrame implements MouseListener{
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1,3));
         //buttonsPanel.setPreferredSize(new Dimension(500,200));
-        buttonsPanel.setBackground(Color.WHITE);
+        
         this.add(buttonsPanel,BorderLayout.CENTER);
         
         
         
         
-        JLabel textContainer = new JLabel("");
-        textPanel.add(textContainer);
+        JLabel textContainer1 = new JLabel("");
+        textPanel.add(textContainer1);
+        textContainer1.setText("Welcome to MyMongo");
+        textContainer1.setPreferredSize(new Dimension(650,30));
+        textContainer1.setForeground(Color.WHITE);
+        
+        
+        JLabel textContainer2 = new JLabel("");
+        textPanel.add(textContainer2);
+        textContainer2.setText("connect to your mysql Database on localhost");
+        textContainer2.setPreferredSize(new Dimension(650,30));
+        textContainer2.setForeground(Color.WHITE);
+        
+        JPanel buttonPanel0 = new JPanel();
+        buttonPanel0.setLayout(new FlowLayout());
+        buttonPanel0.setBackground(Color.WHITE);
+        buttonPanel0.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+        buttonsPanel.add(buttonPanel0);
         
         
         JPanel buttonPanel1 = new JPanel();
         buttonPanel1.setLayout(new FlowLayout());
-        buttonPanel1.setBackground(Color.GREEN);
+        buttonPanel1.setBackground(Color.BLACK);
         buttonPanel1.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
         buttonsPanel.add(buttonPanel1);
     
@@ -106,17 +133,15 @@ public class GUI extends JFrame implements MouseListener{
          
         
         
-  
+        
         JPanel buttonPanel3 = new JPanel();
         buttonPanel3.setLayout(new FlowLayout());
         buttonPanel3.setBackground(Color.BLACK);
         buttonPanel3.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
-        buttonsPanel.add(buttonPanel3);
+       // buttonsPanel.add(buttonPanel3);
         
         
-        DBConnect dbConnect = new DBConnect();
-        dbConnect.setConnection("");
-        connection = dbConnect.getConnection(); 
+         
         
         
         final JComboBox comboBox = new JComboBox();
@@ -126,17 +151,60 @@ public class GUI extends JFrame implements MouseListener{
         comboBox.setEditable(true);
         comboBox.setVisible(true);
         
-        try{
-            DatabaseMetaData md = connection.getMetaData();
-            ResultSet set = md.getCatalogs();
+        
+        
+        //*************************************************************************************************//
+        //erster Panle Funktionalität
+        //*************************************************************************************************//
+        JLabel userNameLabel = new JLabel("User name:");
+        JTextField userNameField = new JTextField();
+        JLabel passwordLabel = new JLabel("Password:");
+        userNameField.setPreferredSize(new Dimension(150,23));
+        
+        JTextField passwordField = new JTextField();
+        passwordField.setPreferredSize(new Dimension(150,23));
+        
+        JButton connectButton = new JButton();
+        connectButton.setText("Connect to Database");
+        connectButton.setVisible(true);
+        connectButton.setPreferredSize(new Dimension(160,30));
+        connectButton.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+         
             
-            while(set.next()){
-                comboBox.addItem(set.getString("TABLE_CAT"));
-            }            
-        }
-        catch(Exception e){
+            dbConnect = new DBConnect(userNameField.getText(), passwordField.getText());
+            dbConnect.setConnection("");
+            connection = dbConnect.getConnection();
             
-        }
+            try{
+                DatabaseMetaData md = connection.getMetaData();
+                ResultSet set = md.getCatalogs();
+
+                while(set.next()){
+                    comboBox.addItem(set.getString("TABLE_CAT"));
+                }            
+            }
+            catch(Exception exception){
+
+            }
+            buttonPanel1.setBackground(Color.WHITE);
+            buttonPanel0.setBackground(Color.BLACK);
+            
+            textContainer1.setText("Choose the databse you want to migrate");
+            textContainer2.setText("");
+            
+          }
+        });
+        buttonPanel0.add(userNameLabel);
+        buttonPanel0.add(userNameField);
+        buttonPanel0.add(passwordLabel);
+        buttonPanel0.add(passwordField);
+        buttonPanel0.add(connectButton);
+        //*************************************************************************************************//
+        //zweiter Panle Funktionalität
+        //*************************************************************************************************//
 
         final JComboBox docComboBox = new JComboBox();
         final JComboBox embDocComboBox = new JComboBox();
@@ -150,7 +218,8 @@ public class GUI extends JFrame implements MouseListener{
           public void actionPerformed(ActionEvent e)
           {
          
-            textContainer.setText("Database "+comboBox.getSelectedItem().toString()+" is selected");
+            textContainer1.setText("choose first the document where you want to embedd in");
+            textContainer2.setText("choose then the table  you want to embedd (The brackets show over which fields you can embedd)");
             //connection & DB Name mitgeben
             dbConnect.setConnection(comboBox.getSelectedItem().toString());
             store = new StoreDB(dbConnect.getConnection());
@@ -163,8 +232,8 @@ public class GUI extends JFrame implements MouseListener{
             }
             
             buttonPanel1.setBackground(Color.BLACK);
-            buttonPanel2.setBackground(Color.GREEN);
-             showDb();
+            buttonPanel2.setBackground(Color.WHITE);
+           
             
             
           }
@@ -191,8 +260,7 @@ public class GUI extends JFrame implements MouseListener{
             factory = new Factory(store.getDataBase());
             
             
-           // System.out.println(docComboBox.getSelectedItem().toString());
-           // System.out.println(factory.searchTableNr(docComboBox.getSelectedItem().toString()));
+           
             ArrayList<String> joins = factory.checkForJoins(docComboBox.getSelectedItem().toString());
             embDocComboBox.removeAllItems();
             if(joins != null){
@@ -228,12 +296,13 @@ public class GUI extends JFrame implements MouseListener{
             
             
             
-            int t = embDocComboBox.getSelectedIndex();
-            textContainer.setText(new Integer(t).toString());
-            factory.refactoring(t);
+            
+            
+            
+            factory.refactoring(embDocComboBox.getSelectedIndex());
             
             //textContainer.setText(embDocComboBox.getSelectedItem()+" is now in "+docComboBox.getSelectedItem()+" embedded");
-            showDb();
+           
           }
         });
         buttonPanel2.add(embeddButton);
@@ -253,15 +322,21 @@ public class GUI extends JFrame implements MouseListener{
             
             
             buttonPanel2.setBackground(Color.BLACK);
-            buttonPanel3.setBackground(Color.GREEN);
+            buttonPanel3.setBackground(Color.WHITE);
             
-            textContainer.setText("Database is now in MongoDB");
-            
+            textContainer1.setText("Database is now in MongoDB");
+            textContainer2.setText("");
             
           }
         });
         buttonPanel2.add(translateButton);
         
+        
+        //******************************************************************************************//
+        //For query executer
+        //********************************************************************************************//
+        
+        /*
         JButton queryButton = new JButton();
         queryButton.setText("Execute Query");
         queryButton.setVisible(true);
@@ -272,42 +347,20 @@ public class GUI extends JFrame implements MouseListener{
           {
             Query query = new Query(mongo);
            
-            textContainer.setText(query.executeQuery());
+            textContainer1.setText(query.executeQuery());
             
           }
         });
         buttonPanel3.add(queryButton);
-    
+    */
         
         
         this.setVisible(true); 
                
     }
-    
+
    
-    @Override
-    public void mouseClicked(MouseEvent me){
-                               
-       
-              
-    }
-    @Override
-    public void mouseExited(MouseEvent me){
-        
-    }
-    @Override
-    public void mouseEntered(MouseEvent me){
-        
-    }
-    @Override
-    public void mouseReleased(MouseEvent me){
-        
-    }
-    @Override
-    public void mousePressed(MouseEvent me){
-           
-      
-    }
+    //Only for debugging purposes
     public void showDb(){
         
         System.out.println(store.getDataBase().get(2));
@@ -316,7 +369,7 @@ public class GUI extends JFrame implements MouseListener{
         Row r = (Row)l2.get(3);
         Metadata m = (Metadata)r.getMetadata();
        
-        System.out.println("pvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvp");
+      
         for(int i = 2; i < m.metaSize();++i){
             System.out.println("*******************"+m.getValue(i));
         }

@@ -14,7 +14,8 @@ import com.mongodb.util.JSON;
  *
  * @author Markus
  */
-
+//class is not used at the moment
+//was intended to be a query executer on mongo db
 public class Query {
     String queryResult;
     DB db;

@@ -33,11 +33,7 @@ public class Row {
          
          for(int i = 0; i < val.size(); ++i){
              if(i ==0 && row.isEmpty()==false){
-                 //System.out.println(((Metadata)row.get(0)).getTableName());
-                 //System.out.println(val.getMetadata());   
-                 //((Metadata)row.get(0)).addMetaRow(val.getMetadata());
-                
-                 //((Metadata)row.get(0)).addTypeRow(val.getMetadata());
+                 
              }
              else{
                  row.add(val.getValue(i));

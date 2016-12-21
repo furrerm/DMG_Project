@@ -26,13 +26,16 @@ public class DBConnect {
         
         final private String serverName = "localhost";
         
-        final private String username = "root";
-	final private String password = "";
+        final private String userName;
+	final private String password;
         
         String dbName;
         
         
-	public DBConnect() {
+	public DBConnect(String userName, String password) {
+                this.userName = userName;
+                this.password = password;
+                
 		 String driverName = "org.gjt.mm.mysql.Driver";
 		 
 		   
@@ -61,7 +64,7 @@ public class DBConnect {
 
 
             try {
-		connection = DriverManager.getConnection(url, username, password);
+		connection = DriverManager.getConnection(url, userName, password);
 		System.out.println("connection to db "+dbName+" established");
             } catch (SQLException e) {
 				

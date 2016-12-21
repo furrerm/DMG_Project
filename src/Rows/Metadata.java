@@ -44,10 +44,10 @@ public class Metadata {
         types.add(val);
     }
     public void addMetaRow(Metadata val){
-        //System.out.println("----------------------------------");
+        
         int size = val.metaSize();
         for(int i = 2; i < size; ++i){
-           // System.out.println(i+"+++++++++++++++++++++++++++++++++"+val.metaSize()+"   val = "+val.getValue(i));
+           
             meta.add(val.getValue(i));
         }
         

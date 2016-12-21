@@ -18,8 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        DBConnect conn = new DBConnect();
-        GUI gui = new GUI();
+     
+        new GUI();
     }
     
 }

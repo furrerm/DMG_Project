@@ -40,21 +40,16 @@ public class Mongo {
     }
     
     public void createMongo(ArrayList <ArrayList> dataBase){
-        //System.out.println(((Row)dataBase.get(2).get(1)).getValue(5));
-       // System.out.println(((Row)dataBase.get(2).get(1)).getMetadata().getType(4));
-       // System.out.println(((Row)dataBase.get(2).get(1)).getMetadata().getValue(6));
+       
         
         MongoConnection mongo = new MongoConnection(((Metadata)((Row)dataBase.get(0).get(0)).getValue(0)).getDbName());
         db = mongo.getMongoConnection();
        
-        //System.out.println(db);
+       
         
         for(int i1 = 0; i1 < dataBase.size(); i1++){
             table = dataBase.get(i1);
-           // System.out.println("");
-            //System.out.println("");
-           // System.out.println("");
-          //  System.out.println("");
+         
             for(int i2 = 0; i2 < table.size(); i2++){
                 query = "";
                 row = (Row)table.get(i2);
@@ -71,11 +66,9 @@ public class Mongo {
                     coll.insert(dbObject);
                 }
                 catch (Exception e){
-                    //System.out.println("failed");
+                   
                 }               
-                //DB einträge ende
-                System.out.println(query);
-                //System.out.println(queryWithType);
+               
                 
             }
            
@@ -89,35 +82,20 @@ public class Mongo {
     public DB getDB(){
         return db;
     }
-    private void setQuery(Row row){
-        
-        
-        //System.out.println("");
+    private void setQuery(Row row){     
         query += "{";
         comma = "";
         queryWithType = "";
-        
-        //String keyOne = meta.getValue(2).toString(); 
-        
-        for(int i3 = 1; i3 < row.size(); i3++){
-                      
+        for(int i3 = 1; i3 < row.size(); i3++){            
             meta = (Metadata)row.getValue(0);
-            //System.out.println(meta);
             key = meta.getValue(i3+1).toString();
             type = (int)meta.getType(i3-1);
             value = row.getValue(i3).toString();
-            System.out.println(key);
 
             if(i3 > 2 && key.equals(meta.getValue(2).toString())){
                 query += "}, {";
                 comma = "";
             }
-            //System.out.println(meta); 
-            //System.out.println(key); 
-            //System.out.println(type); 
-            //System.out.println(value); 
-
-
             if(type == 12 || type == 1){
                 query += comma+" "+key+" : '"+value+"' ";
                 queryWithType += comma+" "+key+" : '"+value+"' "+type; 
@@ -126,9 +104,7 @@ public class Mongo {
                 query += comma+" "+key+" : "+value+" ";
                 queryWithType += comma+" "+key+" : '"+value+"' "+type; 
             }
-            else if(type == 99&&((Row)row.getValue(i3)).size()!=0){
-                System.out.println("************************************************************"+value);
-             
+            else if(type == 99&&((Row)row.getValue(i3)).size()!=0){  
                query += comma+"  "+key+" : [";
                setQuery((Row)row.getValue(i3));
                query += "]";

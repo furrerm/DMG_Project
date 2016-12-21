@@ -51,7 +51,7 @@ public class StoreDB {
             //Iteration über alle Tables
             while(set.next()){
                 tableName = set.getString(3);
-               // System.out.println(tableName);
+              
                 table = new ArrayList <Row>();
                     
                     try{
@@ -83,10 +83,10 @@ public class StoreDB {
                         try{
                             meta.add(rsmd.getColumnName(i));
                             types.add(rsmd.getColumnType(i));
-                             System.out.println("true"+meta.get(i));
+                            
                         }
                         catch (Exception e){
-                            System.out.println("false");
+                           
                             inColoumNr = false;
                         }
                                 
@@ -100,7 +100,7 @@ public class StoreDB {
                         
                         row.add(new Metadata(meta,types));
                         for (int i6 =0; i6 < ((Metadata)row.get(0)).metaSize();++i6){
-                        System.out.println("ffffffffffffffffff = "+((Metadata)row.get(0)).getValue(i6));
+                      
                                 }
                         
                         
@@ -108,21 +108,20 @@ public class StoreDB {
                            
 
                             try{
-                                System.out.println("************************************************************"+((Metadata)row.get(0)).metaSize());
-                               // System.out.println(value = resultSet.getObject(i));
+                              
+                             
                                value = resultSet.getObject(i);
                                 row.add(value);
                                 for (int i5 =0; i5 < ((Metadata)row.get(0)).metaSize();++i5){
-                                   // System.out.println("************************************************************");
-                                    System.out.println(((Metadata)row.get(0)).getValue(i5));
-                                     //System.out.println("************************************************************");
+                                  
+                                   
                                     
                                 }
                                 
                                 
                             }
                             catch (Exception e){
-                                System.out.println(e.getMessage());
+                                //System.out.println(e.getMessage());
                                 
                                 inColoumNr = false;
                                 
